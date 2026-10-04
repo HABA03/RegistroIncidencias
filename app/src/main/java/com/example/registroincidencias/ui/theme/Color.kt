@@ -11,3 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val SuccessGreen = Color(0xFF2E7D32)
+
+val PrioridadBaja = Color(0xFF15803D)
+val PrioridadMedia = Color(0xFFB45309)
+val PrioridadAlta = Color(0xFFB91C1C)

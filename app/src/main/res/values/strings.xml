@@ -2,11 +2,25 @@
     <string name="app_name">RegistroIncidencias</string>
     <string name="subtitle_screen">Describe la incidencia que deseas registrar.</string>
     <string name="label_titulo">Título de la incidencia</string>
+    <string name="placeholder_titulo">Ej. Proyector del aula 3 no enciende</string>
+    <string name="contador_caracteres">%1$d / %2$d</string>
     <string name="label_descripcion">Descripción de la incidencia</string>
+    <string name="placeholder_descripcion">Qué ocurrió, dónde y desde cuándo.</string>
+    <string name="label_prioridad">Prioridad</string>
+    <string name="hint_prioridad">Toca una opción para indicar la urgencia de la incidencia.</string>
+    <string name="prioridad_baja">Baja</string>
+    <string name="prioridad_baja_detalle">Puede esperar</string>
+    <string name="prioridad_media">Media</string>
+    <string name="prioridad_media_detalle">Atender pronto</string>
+    <string name="prioridad_alta">Alta</string>
+    <string name="prioridad_alta_detalle">Atención inmediata</string>
+    <string name="prioridad_seleccionada">Prioridad seleccionada: %1$s · %2$s</string>
+    <string name="prioridad_sin_seleccion">Aún no has seleccionado una prioridad.</string>
     <string name="button_registrar">Registrar incidencia</string>
     <string name="error_titulo_vacio">Ingresa un título antes de registrar.</string>
     <string name="error_descripcion_vacia">Ingresa una descripción antes de registrar.</string>
-    <string name="success_registrado">Incidencia registrada correctamente.</string>
+    <string name="error_prioridad_vacia">Selecciona una prioridad antes de registrar.</string>
+    <string name="success_registrado">Incidencia registrada correctamente con prioridad %1$s.</string>
     <string name="empty_state">Todavía no hay incidencias registradas.</string>
     <string name="section_incidencias">Incidencias registradas (%1$d)</string>
 </resources>
