@@ -6,6 +6,8 @@ Aplicación móvil Android para el registro rápido de incidencias (fallas, erro
 
 `RegistroIncidencias` permite a una persona usuaria capturar una incidencia indicando un **título**, una **descripción** y una **prioridad**, y registrarla mediante un botón principal. La pantalla valida los datos y muestra retroalimentación inmediata (estado vacío, mensaje de error o mensaje de éxito), además de listar las incidencias registradas durante la sesión.
 
+La app incluye además una pestaña **Diagnóstico** que revisa los sensores del equipo (acelerómetro, luz y proximidad) e interpreta sus lecturas en lenguaje natural, útil para describir incidencias de hardware.
+
 El registro todavía vive en memoria mientras la app está abierta; la persistencia está planificada para un avance posterior.
 
 ## Estado actual de la pantalla
@@ -67,6 +69,64 @@ El documento de entrega de la semana es [`Evidencias_Semana10_Teclado_Tactil_Reg
 ./gradlew connectedDebugAndroidTest
 ```
 
+## Avance semana 12 — Diagnóstico del dispositivo (sensores)
+
+Pestaña **Diagnóstico del dispositivo** (`ui/diagnostico/DiagnosticoDispositivoScreen.kt`), accesible desde la barra superior junto a **Registro**. El formulario se conserva al cambiar de pestaña (`rememberSaveableStateHolder` + `rememberSaveable`).
+
+### Flujo implementado
+
+| Paso | Implementación |
+|---|---|
+| Comprobar disponibilidad | `SensorManager.getDefaultSensor(tipo)` para `TYPE_ACCELEROMETER`, `TYPE_LIGHT` y `TYPE_PROXIMITY`. Si devuelve `null`, la tarjeta muestra **"No disponible"** y un mensaje claro; si ningún sensor existe, el botón de monitoreo se desactiva. |
+| Escuchar cambios | `SensorEventListener` registrado con `SENSOR_DELAY_UI` (≈ 15 lecturas/s), suficiente para una pantalla y con menor consumo que `FASTEST`. |
+| Actualizar estado | `LecturaSensorState` (estado observable de Compose) guarda la última lectura, si el listener está activo y cuántos eventos llegaron. |
+| Interpretar | `InterpretacionSensor` convierte valores crudos en frases: *Dispositivo en reposo / Movimiento leve / Movimiento brusco*, *Ambiente oscuro … Luz solar directa*, *Objeto cerca / Sin objetos cerca*. Los números se muestran solo como apoyo, con su unidad. |
+| Controlar el ciclo | `LifecycleResumeEffect` registra el listener en `ON_RESUME` y lo libera en `ON_PAUSE` o al salir de la composición (cambio de pestaña). El botón **Pausar lectura** también libera los sensores. |
+
+### Criterios de interpretación
+
+| Sensor | Regla | Frase |
+|---|---|---|
+| Acelerómetro | Desviación de la magnitud respecto a la gravedad (9.81 m/s²): < 0.6 · < 3.0 · ≥ 3.0 | Reposo · Movimiento leve · Movimiento brusco |
+| Luz | < 10 · < 200 · < 1 000 · < 10 000 · ≥ 10 000 lx | Oscuro · Tenue · Interior adecuada · Mucha luz · Luz solar directa |
+| Proximidad | Distancia < mín(rango máximo, 5 cm) | Objeto cerca · Sin objetos cerca |
+
+### Evidencias (emulador Pixel 10a · Android 17 / API 37)
+
+Los valores se simularon con la consola del emulador (`adb emu sensor set acceleration|light|proximity …`), equivalente a *Extended controls › Virtual sensors*.
+
+| Captura | Qué demuestra |
+|---|---|
+| [`12_registro_con_pestanas.png`](evidencia/12_registro_con_pestanas.png) | Nueva navegación por pestañas. |
+| [`13_diagnostico_reposo_luz_interior.png`](evidencia/13_diagnostico_reposo_luz_interior.png) | 3 de 3 sensores disponibles y escuchando; reposo e iluminación interior. |
+| [`14_diagnostico_proximidad_lejos.png`](evidencia/14_diagnostico_proximidad_lejos.png) | Proximidad sin objetos cerca. |
+| [`15_diagnostico_movimiento_luz_cerca.png`](evidencia/15_diagnostico_movimiento_luz_cerca.png) | Tras cambiar los valores: movimiento brusco, luz solar directa y objeto cerca. |
+| [`16_diagnostico_pausado_liberado.png`](evidencia/16_diagnostico_pausado_liberado.png) | Monitoreo en pausa: sensores liberados. |
+| [`17_diagnostico_pausado_ultima_lectura.png`](evidencia/17_diagnostico_pausado_ultima_lectura.png) | Última lectura conservada; el contador de eventos deja de aumentar. |
+| [`18_diagnostico_sin_sensores.png`](evidencia/18_diagnostico_sin_sensores.png) | Mensaje claro cuando ningún sensor está disponible. |
+| [`19_registro_conserva_formulario.png`](evidencia/19_registro_conserva_formulario.png) | El título escrito se conserva al volver de la pestaña Diagnóstico. |
+| [`20_logcat_ciclo_sensores.txt`](evidencia/20_logcat_ciclo_sensores.txt) | Logcat del ciclo registro → pausa (liberación) → reanudación → cambio de pestaña. |
+
+Documento de entrega: [`Evidencias_Semana12_Diagnostico_Sensores_RegistroIncidencias.docx`](evidencia/Evidencias_Semana12_Diagnostico_Sensores_RegistroIncidencias.docx).
+
+### Pruebas
+
+- **Unitarias** (`app/src/test/.../sensores/InterpretacionSensorTest.kt`): 10 casos sobre los umbrales de movimiento, luz y proximidad (incluye límites y caída libre).
+- **Instrumentadas**:
+  - `DiagnosticoDispositivoScreenTest`: mensaje claro sin sensores (botón desactivado), pausa/reanudación del monitoreo y conservación del formulario al cambiar de pestaña.
+  - `CicloVidaSensoresTest`: con `ActivityScenario.moveToState(STARTED)` verifica que cada listener se libera al perder el primer plano y se registra de nuevo en `RESUMED`.
+
+```bash
+./gradlew testDebugUnitTest connectedDebugAndroidTest
+```
+
+### Limitaciones
+
+- En el emulador los sensores son virtuales: los valores se inyectan manualmente y no hay ruido real, por lo que los umbrales deben calibrarse en un dispositivo físico.
+- El sensor de proximidad del emulador es binario (0 o 1 cm de rango máximo), igual que en muchos teléfonos; no permite medir distancias intermedias.
+- El acelerómetro incluye la gravedad: girar el equipo lentamente no se interpreta como movimiento, solo los cambios bruscos de aceleración.
+- Con aceleración de GPU del host, `adb shell screencap` del emulador devuelve imágenes negras; las capturas se obtuvieron con `captureToImage()` de Compose Test.
+
 ## Tecnologías
 
 - Kotlin 2.2.10
@@ -90,16 +150,23 @@ También puede compilarse desde la línea de comandos:
 
 ```
 app/src/main/java/com/example/registroincidencias/
-├── MainActivity.kt                    # Pantalla principal (Compose) y teclado contextual
+├── MainActivity.kt                    # Pestañas Registro/Diagnóstico y formulario de registro
 ├── model/
 │   ├── Incidencia.kt                  # Modelo de datos de una incidencia
-│   └── Prioridad.kt                   # Prioridades disponibles (Baja, Media, Alta)
+│   ├── Prioridad.kt                   # Prioridades disponibles (Baja, Media, Alta)
+│   └── RecursoSensor.kt               # Sensores revisados en el diagnóstico
+├── sensores/
+│   ├── InterpretacionSensor.kt        # Valores crudos → frase con contexto (lógica pura)
+│   └── LecturaSensor.kt               # Registro/liberación del listener según el ciclo de vida
 └── ui/
     ├── components/PrioridadSelector.kt # Selector táctil y etiqueta de prioridad
-    └── theme/                         # Tema Material 3 y colores de prioridad
+    ├── diagnostico/                   # Pantalla "Diagnóstico del dispositivo"
+    └── theme/                         # Tema Material 3 y colores
 ```
 
 ## Dificultades encontradas
+
+**Semana 12.** Al agregar las pestañas, el formulario de registro perdía lo escrito al ir a Diagnóstico y volver, porque su estado vivía en `remember` y la pestaña salía de la composición. Se resolvió con `rememberSaveableStateHolder` y `rememberSaveable` (con un `listSaver` para la lista de incidencias), lo que además conserva los datos al rotar la pantalla. También se comprobó que Compose Test no puede leer la interfaz mientras la Activity está en pausa, por lo que la prueba de ciclo de vida verifica la liberación de los listeners a través de Logcat.
 
 **Semana 10.** En la versión anterior, la descripción usaba la acción IME por defecto (salto de línea), así que al terminar de escribir el teclado seguía abierto y tapaba el nuevo selector de prioridad y el botón principal. Se configuró `ImeAction.Done` en la descripción con `KeyboardActions(onDone = { focusManager.clearFocus() })`, de modo que la tecla ✓ cierra el teclado y deja visible el resto del formulario; el título usa `ImeAction.Next` para encadenar ambos campos.
 
@@ -112,3 +179,4 @@ Durante las pruebas también se observó que Gboard no activa Shift en la primer
 - Persistencia de incidencias en base de datos local (Room).
 - Edición y eliminación de incidencias registradas.
 - Filtro de la lista por prioridad.
+- Adjuntar automáticamente el resultado del diagnóstico a una incidencia de hardware.

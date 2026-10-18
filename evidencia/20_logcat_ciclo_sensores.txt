@@ -1,0 +1,24 @@
+10-18 21:54:54.920 I/TestRunner(27230): started: segundoPlanoLiberaYPrimerPlanoVuelveARegistrar(com.example.registroincidencias.CicloVidaSensoresTest)
+10-18 21:54:56.067 D/LifecycleMonitor(27230): Lifecycle status change: com.example.registroincidencias.MainActivity@e5f37af in: RESUMED
+10-18 21:55:06.629 D/DiagnosticoSensores(27230): Listener registrado (Goldfish 3-axis Accelerometer): true
+10-18 21:55:06.647 D/DiagnosticoSensores(27230): Listener registrado (Goldfish Light sensor): true
+10-18 21:55:06.675 D/DiagnosticoSensores(27230): Listener registrado (Goldfish Proximity sensor): true
+10-18 21:55:09.247 D/DiagnosticoSensores(27230): Listener liberado (Goldfish Proximity sensor)
+10-18 21:55:09.265 D/DiagnosticoSensores(27230): Listener liberado (Goldfish Light sensor)
+10-18 21:55:09.275 D/DiagnosticoSensores(27230): Listener liberado (Goldfish 3-axis Accelerometer)
+10-18 21:55:09.283 D/LifecycleMonitor(27230): Lifecycle status change: com.example.registroincidencias.MainActivity@e5f37af in: PAUSED
+10-18 21:55:11.573 D/LifecycleMonitor(27230): Lifecycle status change: com.example.registroincidencias.MainActivity@e5f37af in: RESUMED
+10-18 21:55:11.641 D/DiagnosticoSensores(27230): Listener registrado (Goldfish 3-axis Accelerometer): true
+10-18 21:55:11.649 D/DiagnosticoSensores(27230): Listener registrado (Goldfish Light sensor): true
+10-18 21:55:11.674 D/DiagnosticoSensores(27230): Listener registrado (Goldfish Proximity sensor): true
+10-18 21:55:14.103 D/DiagnosticoSensores(27230): Listener liberado (Goldfish Proximity sensor)
+10-18 21:55:14.106 D/DiagnosticoSensores(27230): Listener liberado (Goldfish Light sensor)
+10-18 21:55:14.110 D/DiagnosticoSensores(27230): Listener liberado (Goldfish 3-axis Accelerometer)
+10-18 21:55:15.638 D/DiagnosticoSensores(27230): Listener registrado (Goldfish 3-axis Accelerometer): true
+10-18 21:55:15.651 D/DiagnosticoSensores(27230): Listener registrado (Goldfish Light sensor): true
+10-18 21:55:15.669 D/DiagnosticoSensores(27230): Listener registrado (Goldfish Proximity sensor): true
+10-18 21:55:16.837 D/DiagnosticoSensores(27230): Listener liberado (Goldfish Proximity sensor)
+10-18 21:55:16.839 D/DiagnosticoSensores(27230): Listener liberado (Goldfish Light sensor)
+10-18 21:55:16.846 D/DiagnosticoSensores(27230): Listener liberado (Goldfish 3-axis Accelerometer)
+10-18 21:55:16.853 D/LifecycleMonitor(27230): Lifecycle status change: com.example.registroincidencias.MainActivity@e5f37af in: PAUSED
+10-18 21:55:18.462 I/TestRunner(27230): finished: segundoPlanoLiberaYPrimerPlanoVuelveARegistrar(com.example.registroincidencias.CicloVidaSensoresTest)

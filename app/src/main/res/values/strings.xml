@@ -23,4 +23,60 @@
     <string name="success_registrado">Incidencia registrada correctamente con prioridad %1$s.</string>
     <string name="empty_state">Todavía no hay incidencias registradas.</string>
     <string name="section_incidencias">Incidencias registradas (%1$d)</string>
+    <!-- Navegación -->
+    <string name="tab_registro">Registro</string>
+    <string name="tab_diagnostico">Diagnóstico</string>
+
+    <!-- Diagnóstico del dispositivo -->
+    <string name="diagnostico_titulo">Diagnóstico del dispositivo</string>
+    <string name="diagnostico_subtitulo">Comprueba el estado de los sensores del equipo antes de reportar una incidencia de hardware.</string>
+    <string name="diagnostico_monitoreo">Monitoreo de sensores</string>
+    <string name="diagnostico_disponibles">Sensores disponibles: %1$d de %2$d</string>
+    <plurals name="diagnostico_escuchando">
+        <item quantity="one">Escuchando %1$d sensor en tiempo real</item>
+        <item quantity="other">Escuchando %1$d sensores en tiempo real</item>
+    </plurals>
+    <string name="diagnostico_en_espera">Preparando la lectura de sensores…</string>
+    <string name="diagnostico_en_pausa">Monitoreo en pausa: sensores liberados</string>
+    <string name="diagnostico_sin_sensores">Este dispositivo no reporta ninguno de los sensores revisados.</string>
+    <string name="diagnostico_nota_ciclo">La lectura se detiene automáticamente al salir de esta pestaña o al enviar la app a segundo plano.</string>
+    <string name="diagnostico_pausar">Pausar lectura</string>
+    <string name="diagnostico_reanudar">Reanudar lectura</string>
+
+    <string name="sensor_acelerometro">Acelerómetro</string>
+    <string name="sensor_acelerometro_proposito">Detecta si el equipo está quieto o en movimiento.</string>
+    <string name="sensor_luz">Sensor de luz</string>
+    <string name="sensor_luz_proposito">Mide la iluminación del entorno para ajustar el brillo de la pantalla.</string>
+    <string name="sensor_proximidad">Sensor de proximidad</string>
+    <string name="sensor_proximidad_proposito">Detecta objetos cercanos a la pantalla, como la oreja durante una llamada.</string>
+
+    <string name="unidad_aceleracion">m/s²</string>
+    <string name="unidad_luz">lx</string>
+    <string name="unidad_distancia">cm</string>
+
+    <string name="sensor_disponible">Disponible</string>
+    <string name="sensor_no_disponible_corto">No disponible</string>
+    <string name="sensor_no_disponible">Sensor no disponible en este dispositivo: no es posible realizar esta comprobación.</string>
+    <plurals name="sensor_detalle_tecnico">
+        <item quantity="one">%1$s · %2$d lectura recibida</item>
+        <item quantity="other">%1$s · %2$d lecturas recibidas</item>
+    </plurals>
+    <string name="lectura_esperando">Sin lectura disponible todavía. Esperando datos del sensor…</string>
+    <string name="lectura_sin_datos_pausa">Sin lectura disponible: el monitoreo está en pausa.</string>
+    <string name="lectura_ultima_antes_pausa">Última lectura registrada antes de pausar el monitoreo.</string>
+
+    <string name="valor_aceleracion">X %1$.2f · Y %2$.2f · Z %3$.2f %4$s (magnitud %5$.2f)</string>
+    <string name="valor_luz">Intensidad: %1$.0f %2$s</string>
+    <string name="valor_proximidad">Distancia: %1$.1f %2$s (rango máximo %3$.1f %2$s)</string>
+
+    <string name="interpretacion_reposo">Dispositivo en reposo</string>
+    <string name="interpretacion_movimiento_leve">Movimiento leve detectado</string>
+    <string name="interpretacion_movimiento_fuerte">Movimiento brusco detectado (sacudida o golpe)</string>
+    <string name="interpretacion_luz_oscuro">Ambiente oscuro</string>
+    <string name="interpretacion_luz_tenue">Iluminación tenue</string>
+    <string name="interpretacion_luz_interior">Iluminación interior adecuada</string>
+    <string name="interpretacion_luz_mucha">Ambiente con mucha luz</string>
+    <string name="interpretacion_luz_solar">Luz solar directa</string>
+    <string name="interpretacion_proximidad_cerca">Objeto cerca de la pantalla</string>
+    <string name="interpretacion_proximidad_lejos">Sin objetos cerca de la pantalla</string>
 </resources>

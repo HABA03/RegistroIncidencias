@@ -15,3 +15,6 @@ val SuccessGreen = Color(0xFF2E7D32)
 val PrioridadBaja = Color(0xFF15803D)
 val PrioridadMedia = Color(0xFFB45309)
 val PrioridadAlta = Color(0xFFB91C1C)
+
+val LecturaNormal = Color(0xFF2E7D32)
+val LecturaAtencion = Color(0xFFB45309)
